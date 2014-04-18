@@ -1,7 +1,10 @@
 package mrdp.ch3;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import mrdp.utils.MRDPUtils;
 
@@ -21,7 +24,8 @@ public class DistinctUserDriver {
     public static class SODistinctUserMapper extends Mapper<Object, Text, Text, NullWritable> {
 
         private Text outUserId = new Text();
-
+        private Set<String> userset = new HashSet<String>();
+        
         @Override
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 
@@ -37,10 +41,20 @@ public class DistinctUserDriver {
             }
 
             // Otherwise, set our output key to the user's id
-            outUserId.set(userId);
+            //outUserId.set(userId);
 
             // Write the user's id with a null value
-            context.write(outUserId, NullWritable.get());
+            //context.write(outUserId, NullWritable.get());
+            userset.add(userId);
+        }
+        
+        @Override
+        protected void cleanup(Context context) throws IOException, InterruptedException {
+            for (Iterator<String> iterator = userset.iterator(); iterator.hasNext();) {
+                String userid = iterator.next();
+                outUserId.set(userid);
+                context.write(outUserId, NullWritable.get());
+            }
         }
     }
 

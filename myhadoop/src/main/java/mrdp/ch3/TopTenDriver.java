@@ -20,6 +20,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class TopTenDriver {
 
     public static class SOTopTenMapper extends Mapper<Object, Text, NullWritable, Text> {
+        
         // Our output key and value Writables
         private TreeMap<Integer, Text> repToRecordMap = new TreeMap<Integer, Text>();
 
