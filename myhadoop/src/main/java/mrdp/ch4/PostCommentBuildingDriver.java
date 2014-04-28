@@ -35,7 +35,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.InputSource;
 
 public class PostCommentBuildingDriver {
-
+    
+    enum Counter {
+        NONPOST,
+        POSTWITHOUTID
+    }
+    
     public static class PostMapper extends Mapper<Object, Text, Text, Text> {
 
         private Text outkey = new Text();
@@ -50,6 +55,7 @@ public class PostCommentBuildingDriver {
             String postId = parsed.get("Id");
 
             if (postId == null) {
+                context.getCounter("PC", "P_Without_PID").increment(1);
                 return;
             }
 
@@ -74,6 +80,7 @@ public class PostCommentBuildingDriver {
 
             String postId = parsed.get("PostId");
             if (postId == null) {
+                context.getCounter("PC", "C_Without_PID").increment(1);
                 return;
             }
 
@@ -91,6 +98,8 @@ public class PostCommentBuildingDriver {
         private ArrayList<String> comments = new ArrayList<String>();
         private DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         private String post = null;
+        
+        
 
         @Override
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
@@ -117,7 +126,10 @@ public class PostCommentBuildingDriver {
 
                 // write out the XML
                 context.write(new Text(postWithCommentChildren), NullWritable.get());
+            } else {
+                context.getCounter(Counter.NONPOST).increment(1);;
             }
+            
         }
 
         private String nestElements(String post, List<String> comments) {
@@ -219,5 +231,7 @@ public class PostCommentBuildingDriver {
         job.setOutputValueClass(Text.class);
 
         System.exit(job.waitForCompletion(true) ? 0 : 2);
+        
+        //job.getCounters().findCounter(key)
     }
 }
