@@ -5,9 +5,9 @@
 1)把数据集按汽车的换挡方式"am"进行分组，分别计算自动挡和手动挡中各个变量的平均数，
 要求分别做出输出格式为list，array和dataframe的结果；
 答复：
-dlply(mtcars, .(am),colwise(mean))
-daply(mtcars, .(am),colwise(mean))
-ddply(mtcars, .(am),colwise(mean))
+dlply(mtcars, .(am), colwise(mean))
+daply(mtcars, .(am), colwise(mean))
+ddply(mtcars, .(am), colwise(mean))
 dlply(mtcars, .(am), colwise(mean))
 daply(mtcars, .(am), colwise(mean))
 ddply(mtcars, .(am), colwise(mean))

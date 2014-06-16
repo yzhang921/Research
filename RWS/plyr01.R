@@ -13,7 +13,7 @@ b=aaply(a,.margins=2,.fun=mean);b
 r=ddply(baseball, .(year), function(df) mean(df[,6:9]))
 
 
-# a*ply(.data, .margins, .fun, ..., .progress = "none ")   array    用Margin分组
+# a*ply(.data, .margins, .fun, ..., .progress = "none ")   array    用Margin分组:1行，2列
 # d*ply(.data, .variables, .fun, ..., .progress = "none ") dataframe用variables分组
 # l*ply(.data, .fun, ..., .progress = "none ")
 
@@ -61,7 +61,7 @@ ldply(list,mean)
 
 
 # m*ply()函数
-# 把array或者dataframe的参数数值放进函数中，得到dataframe（mdply），array（
-maply）或者list（mlply）
+# 把array或者dataframe的参数数值放进函数中，
+# 得到dataframe（mdply），array（maply）或者list（mlply）
 data=data.frame(n=c(10,100,50),mean=c(5,5,10),sd=c(1,2,1));data
-mlply(data,rnorm)
+mlply(data, rnorm)
